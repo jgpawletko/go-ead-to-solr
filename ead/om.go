@@ -14,7 +14,7 @@ const (
 
 type Term struct {
 	Name    string
-	Path    string
+	XPath   string
 	IndexAs []IndexOption
 }
 
@@ -36,6 +36,6 @@ type SolrDoc struct {
 var EADTerminology = Terminology{
 	Root: "ead",
 	Terms: []Term{
-		{"author", "filedesc/titlestmt/author", []IndexOption{Searchable, Displayable}},
+		{"author", `filedesc/titlestmt/author`, []IndexOption{Searchable, Displayable}},
 	},
 }
