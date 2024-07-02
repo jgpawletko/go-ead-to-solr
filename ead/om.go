@@ -8,12 +8,13 @@ import (
 type IndexOption int64
 
 const (
-	Displayable IndexOption = iota
+	Dateable IndexOption = iota
+	Displayable
 	Facetable
 	Searchable
 	Sortable
+	StoredSearchable
 	StoredSortable
-	Dateable
 )
 
 type DataType int64
@@ -82,10 +83,19 @@ func GenFieldName(t Term, indexOption IndexOption) (string, error) {
 	case Int:
 		suffix = "i"
 	default:
-		return "", fmt.Errorf("Invalid data type")
+		return "", fmt.Errorf("invalid data type")
 	}
 
 	switch indexOption {
+	case StoredSearchable:
+		// backward compatibility weirdness here...
+		// Searchable strings are "teim"
+		if dataType == String {
+			suffix = "te"
+		}
+
+		suffix += "sim"
+
 	case Searchable:
 		// backward compatibility weirdness here...
 		// Searchable strings are "teim"
@@ -111,7 +121,7 @@ func GenFieldName(t Term, indexOption IndexOption) (string, error) {
 	case Sortable:
 
 	default:
-		return "", fmt.Errorf("Invalid index option")
+		return "", fmt.Errorf("invalid index option")
 	}
 
 	return name + "_" + suffix, nil
