@@ -3,6 +3,10 @@ package ead
 import (
 	"encoding/xml"
 	"fmt"
+
+	"github.com/lestrrat-go/libxml2/parser"
+	"github.com/lestrrat-go/libxml2/types"
+	"github.com/lestrrat-go/libxml2/xpath"
 )
 
 type IndexOption int64
@@ -40,23 +44,16 @@ type Terminology struct {
 }
 
 type Field struct {
-	XMLName xml.Name `xml:"field"`
-	Name    string   `xml:"name,attr"`
-	Value   string   `xml:",chardata"`
+	Name  string `xml:"name,attr"`
+	Value string `xml:",chardata"`
 }
 
 type SolrDoc struct {
-	Fields []Field `xml:"doc"`
+	XMLName xml.Name `xml:"doc"`
+	Fields  []Field  `xml:"field"`
 }
 
-var EADTerminology = Terminology{
-	Root: "ead",
-	Terms: []Term{
-		{"author", String, `filedesc/titlestmt/author`, []IndexOption{Searchable, Displayable}},
-	},
-}
-
-/* func getXMLDoc(EADXML []byte) (*xml.Document, error) {
+func getXMLDoc(EADXML []byte) (types.Document, error) {
 	p := parser.New()
 	doc, err := p.Parse(EADXML)
 	defer doc.Free()
@@ -65,7 +62,7 @@ var EADTerminology = Terminology{
 	}
 	return doc, nil
 }
-*/
+
 // reference: https://github.com/samvera/active_fedora/blob/12.0-stable/lib/active_fedora/indexing/default_descriptors.rb
 func GenFieldName(t Term, indexOption IndexOption) (string, error) {
 
@@ -129,57 +126,61 @@ func GenFieldName(t Term, indexOption IndexOption) (string, error) {
 	return name + "_" + suffix, nil
 }
 
-// // GenSolrDoc generates a Solr document from an EAD XML document.
-// func GenSolrDoc(EADXML []byte, t Terminology) (SolrDoc, []string) {
+// GenSolrDoc generates a Solr document from an EAD XML document.
+func GenSolrDoc(EADXML []byte, t Terminology) (SolrDoc, []string) {
 
-// 	solrDoc := SolrDoc{}
+	solrDoc := SolrDoc{}
 
-// 	var errors = []string{}
+	var errors = []string{}
 
-// 	xmlDoc, err := getXMLDoc(EADXML)
-// 	if err != nil {
-// 		errors = append(errors, err.Error())
-// 		return solrDoc, errors
-// 	}
+	p := parser.New()
+	xmlDoc, err := p.Parse(EADXML)
+	defer xmlDoc.Free()
+	if err != nil {
+		errors = append(errors, err.Error())
+		return solrDoc, errors
+	}
 
-// 	// TODO: use the terminology root value to set the root node?
-// 	root, err := xmlDoc.DocumentElement()
-// 	if err != nil {
-// 		errors = append(errors, "Unable to extract root node")
-// 		return solrDoc, append(errors, err.Error())
-// 	}
+	// TODO: use the terminology root value to set the root node?
+	root, err := xmlDoc.DocumentElement()
+	if err != nil {
+		errors = append(errors, fmt.Sprintf("problem extracting root node: %s", err.Error()))
+		return solrDoc, append(errors, err.Error())
+	}
 
-// 	ctx, err := xpath.NewContext(root)
-// 	if err != nil {
-// 		errors = append(errors, "Unable to initialize XPathContext")
-// 		return solrDoc, append(errors, err.Error())
-// 	}
-// 	defer ctx.Free()
+	ctx, err := xpath.NewContext(root)
+	if err != nil {
+		errors = append(errors, "Unable to initialize XPathContext")
+		return solrDoc, append(errors, err.Error())
+	}
+	defer ctx.Free()
 
-// 	// register the default namespace
-// 	prefix := `_`
-// 	nsuri := `urn:isbn:1-931666-22-9`
-// 	if err := ctx.RegisterNS(prefix, nsuri); err != nil {
-// 		errors = append(errors, "Failed to register namespace")
-// 		return solrDoc, append(errors, err.Error())
-// 	}
+	// register the default namespace
+	prefix := `_`
+	nsuri := `urn:isbn:1-931666-22-9`
+	if err := ctx.RegisterNS(prefix, nsuri); err != nil {
+		errors = append(errors, "Failed to register namespace")
+		return solrDoc, append(errors, err.Error())
+	}
 
-// 	for _, term := range t.Terms {
-// 		exprString := `/` + t.Root + `/` + term.XPath
-// 		nodes := xpath.NodeList(ctx.Find(exprString))
+	for _, term := range t.Terms {
+		//exprString := `/` + t.Root + `/` + term.XPath
+		//exprString := `//` + term.XPath
+		exprString := `/_:ead/_:eadheader[1]/_:filedesc[1]/_:titlestmt[1]/_:author[1]`
+		nodes := xpath.NodeList(ctx.Find(exprString))
 
-// 		for _, n := range nodes {
-// 			for _, indexOption := range term.IndexAs {
-// 				solrFieldName, err := GenFieldName(term, indexOption)
-// 				if err != nil {
-// 					errors = append(errors, err.Error())
-// 					return solrDoc, errors
-// 				}
-// 				field := Field{Name: solrFieldName, Value: n.String()}
-// 				solrDoc.Fields = append(solrDoc.Fields, field)
-// 			}
-// 		}
-// 	}
+		for _, n := range nodes {
+			for _, indexOption := range term.IndexAs {
+				solrFieldName, err := GenFieldName(term, indexOption)
+				if err != nil {
+					errors = append(errors, err.Error())
+					return solrDoc, errors
+				}
+				field := Field{Name: solrFieldName, Value: n.NodeValue()}
+				solrDoc.Fields = append(solrDoc.Fields, field)
+			}
+		}
+	}
 
-// 	return solrDoc, errors
-// }
+	return solrDoc, errors
+}
