@@ -1,57 +1,12 @@
 package ead
 
 import (
-	"encoding/xml"
 	"fmt"
 	"regexp"
 
 	"github.com/lestrrat-go/libxml2/parser"
 	"github.com/lestrrat-go/libxml2/xpath"
 )
-
-type IndexOption int64
-
-const (
-	Dateable IndexOption = iota
-	Displayable
-	Facetable
-	Searchable
-	Sortable
-	StoredSearchable
-	StoredSortable
-	Symbol
-)
-
-type DataType int64
-
-const (
-	String DataType = iota
-	Text
-	Date
-	Int
-)
-
-type Term struct {
-	Name     string
-	DataType DataType
-	XPath    string
-	IndexAs  []IndexOption
-}
-
-type Terminology struct {
-	Root  string
-	Terms []Term
-}
-
-type Field struct {
-	Name  string `xml:"name,attr"`
-	Value string `xml:",chardata"`
-}
-
-type SolrDoc struct {
-	XMLName xml.Name `xml:"doc"`
-	Fields  []Field  `xml:"field"`
-}
 
 // xpathToExpression is a helper function to add the default namespace to an xpath so that it can be used in a XPath query
 func XpathToExpression(s string) string {
