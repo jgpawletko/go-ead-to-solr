@@ -56,7 +56,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	data, errors := ead.GenSolrDoc([]byte(fabifiedEAD), ead.EADTerminology)
+	solrDoc, errors := ead.GenSolrDoc([]byte(fabifiedEAD), ead.EADTerminology)
 	if len(errors) != 0 {
 		for _, eMsg := range errors {
 			fmt.Printf("%s\n", eMsg)
@@ -64,11 +64,13 @@ func main() {
 		os.Exit(1)
 	}
 
-	output, err := xml.MarshalIndent(data, "", "  ")
+	solrAddDoc := ead.SolrAdd{SolrDoc: solrDoc}
+
+	output, err := xml.MarshalIndent(solrAddDoc, "", "  ")
 	if err != nil {
 		fmt.Printf("error: %v\n", err)
 	}
-
+	os.Stdout.Write([]byte(xml.Header))
 	os.Stdout.Write(output)
 	os.Exit(0)
 }
