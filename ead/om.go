@@ -54,7 +54,7 @@ type SolrDoc struct {
 }
 
 // xpathToExpression is a helper function to add the default namespace to an xpath so that it can be used in a XPath query
-func xpathToExpression(s string) string {
+func XpathToExpression(s string) string {
 	defaultNameSpaceMatcher := regexp.MustCompile(`/(\w+)`)
 	s = defaultNameSpaceMatcher.ReplaceAllString(s, `/_:$1`)
 	return s
@@ -166,7 +166,8 @@ func GenSolrDoc(EADXML []byte, t Terminology) (*SolrDoc, []string) {
 		//exprString := `//` + term.XPath
 		// exprString := `/_:ead/_:eadheader[1]/_:filedesc[1]/_:titlestmt[1]/_:author[1]`
 		// exprString := `/_:ead/_:eadheader/_:filedesc/_:titlestmt/_:author`
-		exprString := `/_:ead/_:filedesc/_:titlestmt/_:author`
+		// exprString := `/_:ead/_:filedesc/_:titlestmt/_:author`
+		exprString := XpathToExpression(`//` + term.XPath)
 		nodes := xpath.NodeList(ctx.Find(exprString))
 
 		for _, n := range nodes {

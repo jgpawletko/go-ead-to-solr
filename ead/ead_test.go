@@ -81,3 +81,21 @@ func TestGenSolrDoc(t *testing.T) {
 		fmt.Printf("%v\n", data)
 	})
 }
+
+func TestXpathToExpression(t *testing.T) {
+
+	t.Run("Test XpathToExpression()", func(t *testing.T) {
+
+		// input, expected, comment
+		scenarios := [][]string{
+			{"//filedesc/titlestmt/author", "//_:filedesc/_:titlestmt/_:author", "filedesc/titlestmt/author"},
+		}
+
+		for _, scenario := range scenarios {
+			got := XpathToExpression(scenario[0])
+			if got != scenario[1] {
+				t.Errorf("unexpected result: %s: want: '%s', got: '%s'", scenario[2], scenario[1], got)
+			}
+		}
+	})
+}
