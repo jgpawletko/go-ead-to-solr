@@ -39,6 +39,10 @@ var EADTerminology = Terminology{
 		{"subject", String, `archdesc[@level='collection']/*[name() != 'dsc']//subject`, []IndexOption{Searchable, Displayable}},
 		{"title", String, `archdesc[@level='collection']/*[name() != 'dsc']//title`, []IndexOption{Searchable, Displayable}},
 		{"note", String, `archdesc[@level='collection']/*[name() != 'dsc']//note`, []IndexOption{Searchable, Displayable}},
+
+		// Copy fields
+		// collection is an alias for unittitle
+		{"collection", String, `archdesc[@level='collection']/did/unittitle`, []IndexOption{Facetable, Displayable, Searchable}},
 	},
 }
 
