@@ -2,6 +2,8 @@ github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/lestrrat-go/libxml2 v0.0.0-20240521004304-a75c203ac627 h1:M7EEuhGDmn9bWSnap5mzVlg8pmVucmLytCjVjm+H4QU=
 github.com/lestrrat-go/libxml2 v0.0.0-20240521004304-a75c203ac627/go.mod h1:/0MMipmS+5SMXCSkulsvJwYmddKI4IL5tVy6AZMo9n0=
+github.com/nyulibraries/dlts-finding-aids-ead-go-packages v0.31.0 h1:nj9BjmLBb9OaZDoBplsx1ESdIU5qOZjJ0uW3xNsY8+4=
+github.com/nyulibraries/dlts-finding-aids-ead-go-packages v0.31.0/go.mod h1:TnyVXZkmtl7DgZ8+tZFCWRxbhiDAmByi8C5yxiorsE0=
 github.com/pkg/errors v0.9.1 h1:FEBLx1zS214owpjy7qsBeixbURkuhQAwrK5UwLGTwt4=
 github.com/pkg/errors v0.9.1/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINEl0=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
