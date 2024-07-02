@@ -8,7 +8,7 @@
 Given that we already have the files containing the XPath expressions, e.g., `document.rb`, then we could just implement the existing functionality to Go and see if the resulting code was suffciently performant.
 
 
-** code flow:** 
+**code flow:** 
 ```
 input  --> path to EAD file
 output --> Solr XML files
