@@ -15,6 +15,7 @@ const (
 	Sortable
 	StoredSearchable
 	StoredSortable
+	Symbol
 )
 
 type DataType int64
@@ -93,7 +94,6 @@ func GenFieldName(t Term, indexOption IndexOption) (string, error) {
 		if dataType == String {
 			suffix = "te"
 		}
-
 		suffix += "sim"
 
 	case Searchable:
@@ -102,7 +102,6 @@ func GenFieldName(t Term, indexOption IndexOption) (string, error) {
 		if dataType == String {
 			suffix = "te"
 		}
-
 		suffix += "im"
 
 	case StoredSortable:
@@ -111,20 +110,23 @@ func GenFieldName(t Term, indexOption IndexOption) (string, error) {
 		if dataType == String {
 			suffix = "te"
 		}
-
 		suffix += "sim"
 
+	case Sortable:
+		suffix += "si"
+
 	case Displayable:
-		// NOTE: this is universal and not based on the DataType
+		// universal, so suffix is assigned, not appended to
 		suffix = "ssm"
 	case Dateable:
-		// NOTE: this is universal and not based on the DataType
+		// universal, so suffix is assigned, not appended to
 		suffix = "dtsim"
 	case Facetable:
-		// NOTE: this is universal and not based on the DataType
+		// universal, so suffix is assigned, not appended to
 		suffix = "sim"
-	case Sortable:
-
+	case Symbol:
+		// universal, so suffix is assigned, not appended to
+		suffix = "ssim"
 	default:
 		return "", fmt.Errorf("invalid index option")
 	}
