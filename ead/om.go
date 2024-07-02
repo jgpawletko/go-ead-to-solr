@@ -117,7 +117,12 @@ func GenFieldName(t Term, indexOption IndexOption) (string, error) {
 	case Displayable:
 		// NOTE: this is universal and not based on the DataType
 		suffix = "ssm"
+	case Dateable:
+		// NOTE: this is universal and not based on the DataType
+		suffix = "dtsim"
 	case Facetable:
+		// NOTE: this is universal and not based on the DataType
+		suffix = "sim"
 	case Sortable:
 
 	default:
