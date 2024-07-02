@@ -3,9 +3,9 @@ package ead
 import (
 	"encoding/xml"
 	"fmt"
+	"regexp"
 
 	"github.com/lestrrat-go/libxml2/parser"
-	"github.com/lestrrat-go/libxml2/types"
 	"github.com/lestrrat-go/libxml2/xpath"
 )
 
@@ -53,16 +53,14 @@ type SolrDoc struct {
 	Fields  []Field  `xml:"field"`
 }
 
-func getXMLDoc(EADXML []byte) (types.Document, error) {
-	p := parser.New()
-	doc, err := p.Parse(EADXML)
-	defer doc.Free()
-	if err != nil {
-		return nil, err
-	}
-	return doc, nil
+// xpathToExpression is a helper function to add the default namespace to an xpath so that it can be used in a XPath query
+func xpathToExpression(s string) string {
+	defaultNameSpaceMatcher := regexp.MustCompile(`/(\w+)`)
+	s = defaultNameSpaceMatcher.ReplaceAllString(s, `/_:$1`)
+	return s
 }
 
+// this is a bit ugly, but unfortunately there is coupling between the data type and the index option...
 // reference: https://github.com/samvera/active_fedora/blob/12.0-stable/lib/active_fedora/indexing/default_descriptors.rb
 func GenFieldName(t Term, indexOption IndexOption) (string, error) {
 
@@ -81,7 +79,7 @@ func GenFieldName(t Term, indexOption IndexOption) (string, error) {
 	case Int:
 		suffix = "i"
 	default:
-		return "", fmt.Errorf("invalid data type")
+		return "", fmt.Errorf("unsupported data type")
 	}
 
 	switch indexOption {
@@ -120,14 +118,14 @@ func GenFieldName(t Term, indexOption IndexOption) (string, error) {
 	case Symbol:
 		suffix = "ssim"
 	default:
-		return "", fmt.Errorf("invalid index option")
+		return "", fmt.Errorf("unsupported index option")
 	}
 
 	return name + "_" + suffix, nil
 }
 
 // GenSolrDoc generates a Solr document from an EAD XML document.
-func GenSolrDoc(EADXML []byte, t Terminology) (SolrDoc, []string) {
+func GenSolrDoc(EADXML []byte, t Terminology) (*SolrDoc, []string) {
 
 	solrDoc := SolrDoc{}
 
@@ -138,20 +136,20 @@ func GenSolrDoc(EADXML []byte, t Terminology) (SolrDoc, []string) {
 	defer xmlDoc.Free()
 	if err != nil {
 		errors = append(errors, err.Error())
-		return solrDoc, errors
+		return nil, errors
 	}
 
 	// TODO: use the terminology root value to set the root node?
 	root, err := xmlDoc.DocumentElement()
 	if err != nil {
 		errors = append(errors, fmt.Sprintf("problem extracting root node: %s", err.Error()))
-		return solrDoc, append(errors, err.Error())
+		return nil, append(errors, err.Error())
 	}
 
 	ctx, err := xpath.NewContext(root)
 	if err != nil {
-		errors = append(errors, "Unable to initialize XPathContext")
-		return solrDoc, append(errors, err.Error())
+		errors = append(errors, "unable to initialize XPathContext")
+		return nil, append(errors, err.Error())
 	}
 	defer ctx.Free()
 
@@ -159,22 +157,23 @@ func GenSolrDoc(EADXML []byte, t Terminology) (SolrDoc, []string) {
 	prefix := `_`
 	nsuri := `urn:isbn:1-931666-22-9`
 	if err := ctx.RegisterNS(prefix, nsuri); err != nil {
-		errors = append(errors, "Failed to register namespace")
-		return solrDoc, append(errors, err.Error())
+		errors = append(errors, "failed to register namespace")
+		return nil, append(errors, err.Error())
 	}
 
 	for _, term := range t.Terms {
 		//exprString := `/` + t.Root + `/` + term.XPath
 		//exprString := `//` + term.XPath
-		exprString := `/_:ead/_:eadheader[1]/_:filedesc[1]/_:titlestmt[1]/_:author[1]`
+		// exprString := `/_:ead/_:eadheader[1]/_:filedesc[1]/_:titlestmt[1]/_:author[1]`
+		// exprString := `/_:ead/_:eadheader/_:filedesc/_:titlestmt/_:author`
+		exprString := `/_:ead/_:filedesc/_:titlestmt/_:author`
 		nodes := xpath.NodeList(ctx.Find(exprString))
 
 		for _, n := range nodes {
 			for _, indexOption := range term.IndexAs {
 				solrFieldName, err := GenFieldName(term, indexOption)
 				if err != nil {
-					errors = append(errors, err.Error())
-					return solrDoc, errors
+					return nil, append(errors, err.Error())
 				}
 				field := Field{Name: solrFieldName, Value: n.NodeValue()}
 				solrDoc.Fields = append(solrDoc.Fields, field)
@@ -182,5 +181,5 @@ func GenSolrDoc(EADXML []byte, t Terminology) (SolrDoc, []string) {
 		}
 	}
 
-	return solrDoc, errors
+	return &solrDoc, errors
 }

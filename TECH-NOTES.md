@@ -35,6 +35,9 @@ write SolrDocAdd XML document
 ----
 **References:**  
 
+* Adding XML Header to output:  `<?xml version="1.0" encoding="UTF-8"?>`
+  https://stackoverflow.com/a/64250018
+
 * What do the Solr `<field @name>` suffixes mean?    
   https://github.com/samvera/active_fedora/blob/12.0-stable/lib/active_fedora/indexing/default_descriptors.rb  
 
@@ -68,7 +71,7 @@ write SolrDocAdd XML document
   :sortable
   :stored_sortable
   ```
-  
+
   **Bottom line:**  
   At a minimum, we must support the following `IndexOptions`:
   ```
