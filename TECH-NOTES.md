@@ -41,3 +41,40 @@ write SolrDocAdd XML document
 * Where do the `XPath`s and stuff come from?  
   https://github.com/NYULibraries/ead_indexer/blob/master/lib/ead_indexer/document.rb
 
+* What suffixes are used in the Solr schema?  
+  https://github.com/NYULibraries/specialcollections/blob/master/solr/conf/schema.xml#L593-L748
+
+* What `IndexOptions` are actually used by the `ead_indexer` Gem?
+  ```
+  # path to root of ead_indexer Gem
+  # e.g., 
+  [~/dev/.../ead_indexer](master)$ pwd
+  /Users/$USER/dev/nyulibraries/ead_indexer
+
+  $ egrep -lr 'index_as|insert_field' .
+  ./lib/ead_indexer/component.rb
+  ./lib/ead_indexer/document.rb
+  ./lib/ead_indexer/behaviors/dates.rb
+ 
+  $ grep -r index_as . | rev | cut -d'[' -f1|rev| cut -d] -f1 | tr , $'\n' |sort | uniq
+  :displayable
+  :facetable
+  :searchable
+
+  $ grep -r insert_field . | cut -d, -f4-| tr -d '[:blank:]'| cut -d\) -f1 | tr , $'\n' |sort | uniq
+  :displayable
+  :facetable
+  :searchable
+  :sortable
+  :stored_sortable
+  ```
+  
+  **Bottom line:**  
+  At a minimum, we must support the following `IndexOptions`:
+  ```
+  :displayable
+  :facetable
+  :searchable
+  :sortable
+  :stored_sortable
+  ```
