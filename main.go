@@ -9,6 +9,7 @@ import (
 	"strings"
 
 	ead "github.com/jgpawletko/go-ead-to-solr/ead"
+	"github.com/nyulibraries/dlts-finding-aids-ead-go-packages/ead/modify"
 )
 
 func assertFile(filePath string) error {
@@ -47,7 +48,15 @@ func main() {
 		log.Fatal(err)
 	}
 
-	data, errors := ead.GenSolrDoc(EADXML, ead.EADTerminology)
+	fabifiedEAD, errors := modify.FABifyEAD(EADXML)
+	if len(errors) != 0 {
+		for _, eMsg := range errors {
+			fmt.Printf("%s\n", eMsg)
+		}
+		os.Exit(1)
+	}
+
+	data, errors := ead.GenSolrDoc([]byte(fabifiedEAD), ead.EADTerminology)
 	if len(errors) != 0 {
 		for _, eMsg := range errors {
 			fmt.Printf("%s\n", eMsg)
@@ -61,8 +70,5 @@ func main() {
 	}
 
 	os.Stdout.Write(output)
-	// for _, field := range data.Fields {
-	// 	fmt.Printf("Name: %s\nValue: %s\n", field.Name, field.Value)
-	// }
 	os.Exit(0)
 }
