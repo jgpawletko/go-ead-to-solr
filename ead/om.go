@@ -88,39 +88,39 @@ func GenFieldName(t Term, indexOption IndexOption) (string, error) {
 	}
 
 	switch indexOption {
+	// the following cases ARE data type dependent,
+	// so the suffix appended to
+	// additionally, for backward compatibility, the
+	// Strings are treated like Text
 	case StoredSearchable:
-		// backward compatibility weirdness here...
-		// Searchable strings are "teim"
 		if dataType == String {
 			suffix = "te"
 		}
 		suffix += "sim"
 
 	case Searchable:
-		// backward compatibility weirdness here...
-		// Searchable strings are "teim"
 		if dataType == String {
 			suffix = "te"
 		}
 		suffix += "im"
 
+	// the following cases ARE data type dependent,
+	// so the IndexOption string is APPENDED to the suffix
 	case Sortable:
 		suffix += "i"
 
 	case StoredSortable:
 		suffix += "si"
 
+	// the following cases ARE NOT data type dependent,
+	// so the IndexOption string is ASSIGNED to the suffix
 	case Displayable:
-		// universal, so suffix is assigned, not appended to
 		suffix = "ssm"
 	case Dateable:
-		// universal, so suffix is assigned, not appended to
 		suffix = "dtsim"
 	case Facetable:
-		// universal, so suffix is assigned, not appended to
 		suffix = "sim"
 	case Symbol:
-		// universal, so suffix is assigned, not appended to
 		suffix = "ssim"
 	default:
 		return "", fmt.Errorf("invalid index option")

@@ -44,6 +44,11 @@ func TestGenFieldName(t *testing.T) {
 			{Term{"bar", Text, "", []IndexOption{}}, StoredSortable, "bar_tesi", "failed Text/StoredSortable"},
 			{Term{"baz", Date, "", []IndexOption{}}, StoredSortable, "baz_dtsi", "failed Date/StoredSortable"},
 			{Term{"quux", Int, "", []IndexOption{}}, StoredSortable, "quux_isi", "failed Int/StoredSortable"},
+
+			{Term{"foo", String, "", []IndexOption{}}, Displayable, "foo_ssm", "failed String/Displayable"},
+			{Term{"bar", Text, "", []IndexOption{}}, Displayable, "bar_ssm", "failed Text/Displayable"},
+			{Term{"baz", Date, "", []IndexOption{}}, Displayable, "baz_ssm", "failed Date/Displayable"},
+			{Term{"quux", Int, "", []IndexOption{}}, Displayable, "quux_ssm", "failed Int/Displayable"},
 		}
 
 		for _, scenario := range scenarios {
