@@ -25,21 +25,20 @@ var EADTerminology = Terminology{
 		{"appraisal", String, `archdesc[@level='collection']/appraisal/p`, []IndexOption{Searchable}},
 		{"phystech", String, `archdesc[@level='collection']/phystech/p`, []IndexOption{Searchable}},
 
-		// # Find the following wherever they exist in the tree structure under <archdesc level="collection">
-		// # except under the inventory which starts at <dsc>
-		// t.chronlist(path:"archdesc[@level='collection']/*[name() != 'dsc']//chronlist/chronitem//text()",index_as:[:searchable])
-		// t.corpname(path:"archdesc[@level='collection']/*[name() != 'dsc']//corpname",index_as:[:searchable,:displayable])
-		// t.famname(path:"archdesc[@level='collection']/*[name() != 'dsc']//famname",index_as:[:searchable,:displayable])
-		// t.function(path:"archdesc[@level='collection']/*[name() != 'dsc']//function",index_as:[:searchable,:displayable])
-		// t.genreform(path:"archdesc[@level='collection']/*[name() != 'dsc']//genreform",index_as:[:searchable,:displayable])
-		// t.geogname(path:"archdesc[@level='collection']/*[name() != 'dsc']//geogname",index_as:[:searchable,:displayable])
-		// t.name(path:"archdesc[@level='collection']/*[name() != 'dsc']//name",index_as:[:searchable,:displayable])
-		// t.occupation(path:"archdesc[@level='collection']/*[name() != 'dsc']//occupation",index_as:[:searchable,:displayable])
-		// t.persname(path:"archdesc[@level='collection']/*[name() != 'dsc']//persname",index_as:[:searchable,:displayable])
-		// t.subject(path:"archdesc[@level='collection']/*[name() != 'dsc']//subject",index_as:[:searchable,:displayable])
-		// t.title(path:"archdesc[@level='collection']/*[name() != 'dsc']//title",index_as:[:searchable,:displayable])
-		// t.note(path:"archdesc[@level='collection']/*[name() != 'dsc']//note",index_as:[:searchable,:displayable])
-
+		// Find the following wherever they exist in the tree structure under <archdesc level="collection">
+		// except under the inventory which starts at <dsc>
+		{"chronlist", String, `archdesc[@level='collection']/*[name() != 'dsc']//chronlist/chronitem//text()`, []IndexOption{Searchable}},
+		{"corpname", String, `archdesc[@level='collection']/*[name() != 'dsc']//corpname`, []IndexOption{Searchable, Displayable}},
+		{"famname", String, `archdesc[@level='collection']/*[name() != 'dsc']//famname`, []IndexOption{Searchable, Displayable}},
+		{"function", String, `archdesc[@level='collection']/*[name() != 'dsc']//function`, []IndexOption{Searchable, Displayable}},
+		{"genreform", String, `archdesc[@level='collection']/*[name() != 'dsc']//genreform`, []IndexOption{Searchable, Displayable}},
+		{"geogname", String, `archdesc[@level='collection']/*[name() != 'dsc']//geogname`, []IndexOption{Searchable, Displayable}},
+		{"name", String, `archdesc[@level='collection']/*[name() != 'dsc']//name`, []IndexOption{Searchable, Displayable}},
+		{"occupation", String, `archdesc[@level='collection']/*[name() != 'dsc']//occupation`, []IndexOption{Searchable, Displayable}},
+		{"persname", String, `archdesc[@level='collection']/*[name() != 'dsc']//persname`, []IndexOption{Searchable, Displayable}},
+		{"subject", String, `archdesc[@level='collection']/*[name() != 'dsc']//subject`, []IndexOption{Searchable, Displayable}},
+		{"title", String, `archdesc[@level='collection']/*[name() != 'dsc']//title`, []IndexOption{Searchable, Displayable}},
+		{"note", String, `archdesc[@level='collection']/*[name() != 'dsc']//note`, []IndexOption{Searchable, Displayable}},
 	},
 }
 
