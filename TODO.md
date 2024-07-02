@@ -16,4 +16,9 @@
 
    got:
      <field name="bioghist_teim">Nancy Wallace Henderson is an American playwright and author. Originally from North Carolina, Henderson majored in Dramatic Art at the University of North Carolina at Chapel Hill. There she studied playwriting under Walter Prichard Eaton and continued her studies in New York with Benjamin Bernard Zavin. Henderson won awards from the Dramatics Alliance in California and the University of Wisconsin, and was a member of the Author&#39;s Guild, the Dramatics Guild, and the International Women&#39;s Writing Guild.</field>
+
+[x] need to understand what this proxy does... just grabs the unittitle as collection?
+    t.collection(proxy:[:unittitle],index_as:[:facetable,:displayable,:searchable])
+    # it aliases "unittitle" as "collection" and indexes "collection" independently from "unittitle"
+
 ```
