@@ -89,12 +89,13 @@ func TestXpathToExpression(t *testing.T) {
 		// input, expected, comment
 		scenarios := [][]string{
 			{"//filedesc/titlestmt/author", "//_:filedesc/_:titlestmt/_:author", "filedesc/titlestmt/author"},
+			{"//archdesc[@level='collection']/*[name() != 'dsc']//chronlist/chronitem//text()", "//_:archdesc[@level='collection']/*[name() != 'dsc']//_:chronlist/_:chronitem//text()", "archdesc[@level='collection']/*[name() != 'dsc']//chronlist/chronitem//text()"},
 		}
 
 		for _, scenario := range scenarios {
 			got := XpathToExpression(scenario[0])
 			if got != scenario[1] {
-				t.Errorf("unexpected result: %s: want: '%s', got: '%s'", scenario[2], scenario[1], got)
+				t.Errorf("unexpected result: %s\nwant: '%s'\n got: '%s'", scenario[2], scenario[1], got)
 			}
 		}
 	})
