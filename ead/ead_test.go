@@ -35,10 +35,15 @@ func TestGenFieldName(t *testing.T) {
 			{Term{"baz", Date, "", []IndexOption{}}, Facetable, "baz_sim", "failed Date/Facetable"},
 			{Term{"quux", Int, "", []IndexOption{}}, Facetable, "quux_sim", "failed Int/Facetable"},
 
-			{Term{"foo", String, "", []IndexOption{}}, Sortable, "foo_ssi", "failed String/Sortable"},
-			{Term{"bar", Text, "", []IndexOption{}}, Sortable, "bar_tesi", "failed Text/Sortable"},
-			{Term{"baz", Date, "", []IndexOption{}}, Sortable, "baz_dtsi", "failed Date/Sortable"},
-			{Term{"quux", Int, "", []IndexOption{}}, Sortable, "quux_isi", "failed Int/Sortable"},
+			{Term{"foo", String, "", []IndexOption{}}, Sortable, "foo_si", "failed String/Sortable"},
+			{Term{"bar", Text, "", []IndexOption{}}, Sortable, "bar_tei", "failed Text/Sortable"},
+			{Term{"baz", Date, "", []IndexOption{}}, Sortable, "baz_dti", "failed Date/Sortable"},
+			{Term{"quux", Int, "", []IndexOption{}}, Sortable, "quux_ii", "failed Int/Sortable"},
+
+			{Term{"foo", String, "", []IndexOption{}}, StoredSortable, "foo_ssi", "failed String/StoredSortable"},
+			{Term{"bar", Text, "", []IndexOption{}}, StoredSortable, "bar_tesi", "failed Text/StoredSortable"},
+			{Term{"baz", Date, "", []IndexOption{}}, StoredSortable, "baz_dtsi", "failed Date/StoredSortable"},
+			{Term{"quux", Int, "", []IndexOption{}}, StoredSortable, "quux_isi", "failed Int/StoredSortable"},
 		}
 
 		for _, scenario := range scenarios {

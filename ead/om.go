@@ -104,15 +104,10 @@ func GenFieldName(t Term, indexOption IndexOption) (string, error) {
 		}
 		suffix += "im"
 
-	case StoredSortable:
-		// backward compatibility weirdness here...
-		// Searchable strings are "teim"
-		if dataType == String {
-			suffix = "te"
-		}
-		suffix += "sim"
-
 	case Sortable:
+		suffix += "i"
+
+	case StoredSortable:
 		suffix += "si"
 
 	case Displayable:
