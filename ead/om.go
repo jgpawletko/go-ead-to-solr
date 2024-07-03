@@ -163,3 +163,14 @@ func GenSolrDoc(EADXML []byte, t Terminology) (*SolrDoc, []string) {
 
 	return &solrDoc, errors
 }
+
+func (sd *SolrDoc) AddField(name string, dt DataType, value string, indexOptions []IndexOption) error {
+	for _, indexOption := range indexOptions {
+		solrFieldName, err := GenFieldName(Term{Name: name, DataType: dt}, indexOption)
+		if err != nil {
+			return err
+		}
+		sd.Fields = append(sd.Fields, Field{Name: solrFieldName, Value: value})
+	}
+	return nil
+}

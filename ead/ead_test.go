@@ -111,3 +111,35 @@ func TestXpathToExpression(t *testing.T) {
 		}
 	})
 }
+
+func TestSolrDocAddField(t *testing.T) {
+
+	t.Run("Test SolrDoc.AddField()", func(t *testing.T) {
+
+		solrDoc := SolrDoc{}
+		solrDoc.AddField("repository", String, "fales", []IndexOption{StoredSortable, Facetable, Displayable})
+
+		if len(solrDoc.Fields) != 3 {
+			t.Errorf("unexpected number of fields: want: 1, got: %d", len(solrDoc.Fields))
+		}
+
+		scenarios := [][]string{
+			{"repository_ssi", "fales", "failed StoredSortable"},
+			{"repository_sim", "fales", "failed Facetable"},
+			{"repository_ssm", "fales", "failed Displayable"},
+		}
+
+		for i, scenario := range scenarios {
+			got := solrDoc.Fields[i].Name
+			if got != scenario[0] {
+				t.Errorf("unexpected result: %s\nwant: '%s'\n got: '%s'", scenario[2], scenario[0], got)
+			}
+
+			got = solrDoc.Fields[i].Value
+			if got != scenario[1] {
+				t.Errorf("unexpected result: %s\nwant: '%s'\n got: '%s'", scenario[2], scenario[1], got)
+			}
+		}
+
+	})
+}
