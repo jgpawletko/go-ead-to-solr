@@ -149,8 +149,8 @@ func GenSolrDoc(EADXML []byte, t Terminology) (*SolrDoc, []string) {
 		exprString := XpathToExpression(`//` + term.XPath)
 		nodes := xpath.NodeList(ctx.Find(exprString))
 
-		for _, n := range nodes {
-			for _, indexOption := range term.IndexAs {
+		for _, indexOption := range term.IndexAs {
+			for _, n := range nodes {
 				solrFieldName, err := GenFieldName(term, indexOption)
 				if err != nil {
 					return nil, append(errors, err.Error())
