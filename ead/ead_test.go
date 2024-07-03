@@ -88,8 +88,19 @@ func TestXpathToExpression(t *testing.T) {
 
 		// input, expected, comment
 		scenarios := [][]string{
-			{"//filedesc/titlestmt/author", "//_:filedesc/_:titlestmt/_:author", "filedesc/titlestmt/author"},
-			{"//archdesc[@level='collection']/*[name() != 'dsc']//chronlist/chronitem//text()", "//_:archdesc[@level='collection']/*[name() != 'dsc']//_:chronlist/_:chronitem//text()", "archdesc[@level='collection']/*[name() != 'dsc']//chronlist/chronitem//text()"},
+			{"//filedesc/titlestmt/author", "//_:filedesc/_:titlestmt/_:author", "//filedesc/titlestmt/author"},
+			{"//archdesc[@level='collection']/*[name() != 'dsc']//chronlist/chronitem//text()",
+				"//_:archdesc[@level='collection']/*[name() != 'dsc']//_:chronlist/_:chronitem//text()",
+				"//archdesc[@level='collection']/*[name() != 'dsc']//chronlist/chronitem//text()"},
+			{"//archdesc[@level='collection']/did/origination[@label='creator']/*[name() = 'corpname' or name() = 'famname' or name() = 'persname']",
+				"//_:archdesc[@level='collection']/_:did/_:origination[@label='creator']/*[name() = 'corpname' or name() = 'famname' or name() = 'persname']",
+				"//archdesc[@level='collection']/did/origination[@label='creator']/*[name() = 'corpname' or name() = 'famname' or name() = 'persname']"},
+			{"//archdesc[@level='collection']/did/unitdate[not(@type)]",
+				"//_:archdesc[@level='collection']/_:did/_:unitdate[not(@type)]",
+				"//archdesc[@level='collection']/did/unitdate[not(@type)]"},
+			{"archdesc[@level='collection']/did/unitdate/@normal",
+				"_:archdesc[@level='collection']/_:did/_:unitdate/@normal",
+				"archdesc[@level='collection']/did/unitdate/@normal"},
 		}
 
 		for _, scenario := range scenarios {

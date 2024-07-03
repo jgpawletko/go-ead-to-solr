@@ -3,17 +3,45 @@ package ead
 import (
 	"fmt"
 	"regexp"
+	"strings"
 
 	"github.com/lestrrat-go/libxml2/parser"
 	"github.com/lestrrat-go/libxml2/xpath"
 )
 
+var xpathFunctionMatcher = regexp.MustCompile(`\/?\w+\(\)`) // matches functions in xpath
+var xpathWordMatcher = regexp.MustCompile(`^(\w+).*\/?`)    // matches words in xpath
+
 // xpathToExpression is a helper function to add the default namespace to an xpath so that it can be used in a XPath query
-func XpathToExpression(s string) string {
-	// defaultNameSpaceMatcher := regexp.MustCompile(`/(\w+[^(])`)
-	defaultNameSpaceMatcher := regexp.MustCompile(`/(\w+)`)
-	s = defaultNameSpaceMatcher.ReplaceAllString(s, `/_:$1`)
-	return s
+func XpathToExpression(xp string) string {
+	// https://go.dev/play/p/-iILPI4g6q6
+	expr := ""
+	substrings := strings.SplitAfter(xp, "/")
+	for _, ss := range substrings {
+
+		// if it's a slash, echo it
+		if ss == "/" {
+			expr += "/"
+			continue
+		}
+
+		// if it's a function, echo it
+		b := xpathFunctionMatcher.Match([]byte(ss))
+		if b {
+			expr += ss
+			continue
+		}
+
+		// if it's a word, convert it
+		if xpathWordMatcher.Match([]byte(ss)) {
+			expr = expr + "_:" + ss
+			continue
+		}
+
+		// if it's none of the above, echo it
+		expr += ss
+	}
+	return expr
 }
 
 // this is a bit ugly, but unfortunately there is coupling between the data type and the index option...
