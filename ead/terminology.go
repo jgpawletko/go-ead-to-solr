@@ -46,13 +46,13 @@ var EADTerminology = Terminology{
 	},
 }
 
-func creatorFieldsToXPath() string {
-	str := ""
-	for _, field := range []string{"corpname", "famname", "persname"} {
-		str += "name() = '" + field + "' or "
-	}
-	return str
-}
+// func creatorFieldsToXPath() string {
+// 	str := ""
+// 	for _, field := range []string{"corpname", "famname", "persname"} {
+// 		str += "name() = '" + field + "' or "
+// 	}
+// 	return str
+// }
 
 // # Places to look for names
 // NAME_FIELDS = [:corpname, :famname, :persname]
