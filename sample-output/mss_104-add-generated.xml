@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<add>
+  <doc>
+    <field name="author_teim">Jennifer E. Neal</field>
+    <field name="author_ssm">Jennifer E. Neal</field>
+    <field name="unittitle_teim">Nancy Henderson Plays</field>
+    <field name="unittitle_ssm">Nancy Henderson Plays</field>
+    <field name="unitid_teim">MSS.104</field>
+    <field name="unitid_ssm">MSS.104</field>
+    <field name="abstract_teim">Nancy Wallace Henderson is an American playwright and author. Materials include six plays published between 1954 and 1993, and two programs.</field>
+    <field name="abstract_ssm">Nancy Wallace Henderson is an American playwright and author. Materials include six plays published between 1954 and 1993, and two programs.</field>
+    <field name="creator_teim">Henderson, Nancy Wallace</field>
+    <field name="creator_ssm">Henderson, Nancy Wallace</field>
+    <field name="unitdate_normal_ssm">1954/1993</field>
+    <field name="unitdate_normal_ssm">1976/1993</field>
+    <field name="unitdate_normal_teim">1954/1993</field>
+    <field name="unitdate_normal_teim">1976/1993</field>
+    <field name="unitdate_normal_sim">1954/1993</field>
+    <field name="unitdate_normal_sim">1976/1993</field>
+    <field name="unitdate_bulk_teim">1976-1993</field>
+    <field name="unitdate_inclusive_teim">1954-1993</field>
+    <field name="scopecontent_teim">Materials include six plays published between 1954 and 1993, one of which was co-authored by Charlotte Kraft, and two programs.</field>
+    <field name="bioghist_teim">Nancy Wallace Henderson is an American playwright and author. Originally from North Carolina, Henderson majored in Dramatic Art at the University of North Carolina at Chapel Hill. There she studied playwriting under Walter Prichard Eaton and continued her studies in New York with Benjamin Bernard Zavin. Henderson won awards from the Dramatics Alliance in California and the University of Wisconsin, and was a member of the Author&#39;s Guild, the Dramatics Guild, and the International Women&#39;s Writing Guild.</field>
+    <field name="acqinfo_teim">Donated by Nancy Wallace Henderson in 1995. The accession number related to this is 0.104.</field>
+    <field name="corpname_teim">Fales Library and Special Collections</field>
+    <field name="corpname_ssm">Fales Library and Special Collections</field>
+    <field name="genreform_teim">One-act plays</field>
+    <field name="genreform_teim">Plays (performed works)</field>
+    <field name="genreform_ssm">One-act plays</field>
+    <field name="genreform_ssm">Plays (performed works)</field>
+    <field name="persname_teim">Henderson, Nancy Wallace</field>
+    <field name="persname_teim">Henderson, Nancy Wallace</field>
+    <field name="persname_teim">Kraft, Charlotte</field>
+    <field name="persname_ssm">Henderson, Nancy Wallace</field>
+    <field name="persname_ssm">Henderson, Nancy Wallace</field>
+    <field name="persname_ssm">Kraft, Charlotte</field>
+    <field name="subject_teim">Authors, American -- 20th century.</field>
+    <field name="subject_teim">American drama -- 20th century.</field>
+    <field name="subject_teim">American drama -- Women authors</field>
+    <field name="subject_teim">Dramatists, American.</field>
+    <field name="subject_ssm">Authors, American -- 20th century.</field>
+    <field name="subject_ssm">American drama -- 20th century.</field>
+    <field name="subject_ssm">American drama -- Women authors</field>
+    <field name="subject_ssm">Dramatists, American.</field>
+    <field name="collection_sim">Nancy Henderson Plays</field>
+    <field name="collection_ssm">Nancy Henderson Plays</field>
+    <field name="collection_teim">Nancy Henderson Plays</field>
+  </doc>
+</add>
